@@ -6,5 +6,5 @@ import id.bca7.demoSpring.models.dto.response.ResponseData;
 public interface TransactionService {
     ResponseData createTransaction(TransactionRequest request) throws Exception;
     ResponseData getTransactionList(Boolean status);
-    
+    ResponseData returnTransaction(Integer id) throws Exception;
 }

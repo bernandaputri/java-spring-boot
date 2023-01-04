@@ -89,4 +89,19 @@ public class TransactionServiceImpl implements TransactionService {
         return responseData;
     }
 
+    @Override
+    public ResponseData returnTransaction(Integer id) throws Exception {
+        Optional<BookTransaction> transactionById = transactionRepository.findById(id);
+        appValidator.validateTransactionNotFound(transactionById);
+
+        transaction = transactionById.get();
+        appValidator.validateTransactionIsAlreadyReturned(transaction);
+        transaction.setIsReturned(true);
+        transaction.setReturnDateTime(LocalDateTime.now());
+        transactionRepository.save(transaction);
+        responseData = new ResponseData(200, "Book successfully returned.", transaction);
+
+        return responseData;
+    }
+
 }

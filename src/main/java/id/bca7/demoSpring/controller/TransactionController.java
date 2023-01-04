@@ -3,7 +3,9 @@ package id.bca7.demoSpring.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,5 +45,17 @@ public class TransactionController {
             responseData = new ResponseData(500, e.getMessage(), null);
             return ResponseEntity.status(responseData.getStatus()).body(responseData);
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> returnBook(@PathVariable Integer id) throws Exception {
+        // try {
+            responseData = transactionService.returnTransaction(id);
+            return ResponseEntity.ok().body(responseData);
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        //     responseData = new ResponseData(500, e.getMessage(), null);
+        //     return ResponseEntity.status(responseData.getStatus()).body(responseData);
+        // }
     }
 }

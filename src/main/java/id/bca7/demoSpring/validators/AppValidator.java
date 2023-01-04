@@ -53,4 +53,10 @@ public class AppValidator {
             throw new CustomNotFoundExceptions("Transaction is not found");
         }
     }
+
+    public void validateTransactionIsAlreadyReturned(BookTransaction transaction) throws Exception {
+        if (transaction.getIsReturned()) {
+            throw new Exception("Book is already returned");
+        }
+    }
 }
