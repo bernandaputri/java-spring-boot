@@ -27,7 +27,7 @@ public class TransactionController {
     public ResponseEntity<?> addTransaction(@RequestBody TransactionRequest request) throws Exception {
         try {
             responseData = transactionService.createTransaction(request);
-            return ResponseEntity.status(responseData.getStatus()).body(request);
+            return ResponseEntity.status(responseData.getStatus()).body(responseData);
         } catch (Exception e) {
             e.printStackTrace();
             responseData = new ResponseData(500, e.getMessage(), null);

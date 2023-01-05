@@ -34,6 +34,9 @@ public class Book {
     @JsonIgnore
     private Boolean isDeleted = false;
 
+    @JsonIgnore
+    private Boolean isBorrowed = false;
+
     public Long getId() {
         return id;
     }

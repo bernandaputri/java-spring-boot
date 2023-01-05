@@ -66,14 +66,27 @@ public class TransactionServiceImpl implements TransactionService {
             // get book
             book = books.get();
 
-            // borrow book
-            transaction.setUser(user);
-            transaction.setBook(book);
-            transaction.setBorrowDateTime(LocalDateTime.now());
-            transactionRepository.save(transaction);
+            Optional<Book> availableToBorrow = bookRepository
+                    .findByIdAndIsBorrowed(request.getBookId(), true);
 
-            // Response Data
-            responseData = new ResponseData(HttpStatus.CREATED.value(), "success", book);
+            if (availableToBorrow.isEmpty()) {
+                // borrow book
+                transaction.setUser(user);
+                transaction.setBook(book);
+                transaction.setBorrowDateTime(LocalDateTime.now());
+                transactionRepository.save(transaction);
+
+                // set isBorrowed book
+                book.setIsBorrowed(true);
+                bookRepository.save(book);
+
+                // Response Data
+                responseData = new ResponseData(HttpStatus.CREATED.value(), "success", book);
+            } else {
+                responseData = new ResponseData(HttpStatus.BAD_REQUEST.value(), "failed, book is already borrowed",
+                        null);
+            }
+
         }
         return responseData;
     }
@@ -99,6 +112,8 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setIsReturned(true);
         transaction.setReturnDateTime(LocalDateTime.now());
         transactionRepository.save(transaction);
+        book.setIsBorrowed(false);
+        bookRepository.save(book);
         responseData = new ResponseData(200, "Book successfully returned.", transaction);
 
         return responseData;

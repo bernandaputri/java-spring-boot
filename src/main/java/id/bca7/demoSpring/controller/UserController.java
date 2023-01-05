@@ -29,7 +29,7 @@ public class UserController {
     public ResponseEntity<?> addUser(@RequestBody @Valid UserRequest request) {
         try {
             responseData = userService.createUser(request);
-            return ResponseEntity.status(responseData.getStatus()).body(request);
+            return ResponseEntity.status(responseData.getStatus()).body(responseData);
         } catch (Exception e) {
             e.printStackTrace();
             responseData = new ResponseData(500, e.getMessage(), null);
